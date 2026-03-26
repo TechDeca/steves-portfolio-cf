@@ -1,54 +1,45 @@
-# React + Vite + Hono + Cloudflare Workers
+# Steve's Portfolio
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/vite-react-template)
+A modern personal portfolio website built with React, Vite, Hono, and Cloudflare Workers, featuring D1 database integration.
 
-This template provides a minimal setup for building a React application with TypeScript and Vite, designed to run on Cloudflare Workers. It features hot module replacement, ESLint integration, and the flexibility of Workers deployments.
+![Tech Stack](https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/fc7b4b62-442b-4769-641b-ad4422d74300/public)
 
-![React + TypeScript + Vite + Cloudflare Workers](https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/fc7b4b62-442b-4769-641b-ad4422d74300/public)
+## Tech Stack
 
-<!-- dash-content-start -->
+- **React 18** - UI library
+- **TypeScript** - Type safety
+- **Vite** - Build tool
+- **Hono** - API framework
+- **Cloudflare Workers** - Edge deployment
+- **Cloudflare D1** - SQLite database
+- **Tailwind CSS** - Styling
 
-🚀 Supercharge your web development with this powerful stack:
+## Features
 
-- [**React**](https://react.dev/) - A modern UI library for building interactive interfaces
-- [**Vite**](https://vite.dev/) - Lightning-fast build tooling and development server
-- [**Hono**](https://hono.dev/) - Ultralight, modern backend framework
-- [**Cloudflare Workers**](https://developers.cloudflare.com/workers/) - Edge computing platform for global deployment
-
-### ✨ Key Features
-
-- 🔥 Hot Module Replacement (HMR) for rapid development
-- 📦 TypeScript support out of the box
-- 🛠️ ESLint configuration included
-- ⚡ Zero-config deployment to Cloudflare's global network
-- 🎯 API routes with Hono's elegant routing
-- 🔄 Full-stack development setup
-- 🔎 Built-in Observability to monitor your Worker
-
-Get started in minutes with local development or deploy directly via the Cloudflare dashboard. Perfect for building modern, performant web applications at the edge.
-
-<!-- dash-content-end -->
+- Hero section with dark/light mode toggle
+- About section with resume download
+- Skills grid
+- Projects section (fetched from D1)
+- Experience timeline
+- Contact form (saves to D1)
+- Fully responsive
+- Smooth scroll navigation
+- SEO optimized
 
 ## Getting Started
 
-To start a new project with this template, run:
+### Prerequisites
 
-```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/vite-react-template
-```
+- Node.js 18+
+- Cloudflare account
 
-A live deployment of this template is available at:
-[https://react-vite-template.templates.workers.dev](https://react-vite-template.templates.workers.dev)
-
-## Development
-
-Install dependencies:
+### Installation
 
 ```bash
 npm install
 ```
 
-Start the development server with:
+### Local Development
 
 ```bash
 npm run dev
@@ -56,35 +47,91 @@ npm run dev
 
 Your application will be available at [http://localhost:5173](http://localhost:5173).
 
-## Production
+### D1 Database Setup
 
-Build your project for production:
+The project uses Cloudflare D1 for data persistence. The database is already configured in `wrangler.json`.
+
+To apply migrations locally:
+
+```bash
+# Apply schema
+npx wrangler d1 execute steves-portfolio-db --local --file=migrations/schema.sql
+
+# Seed initial projects
+npx wrangler d1 execute steves-portfolio-db --local --file=migrations/seed.sql
+```
+
+To create a remote D1 database:
+
+```bash
+npx wrangler d1 create steves-portfolio-db
+```
+
+Then update `wrangler.json` with the new database ID.
+
+### Building
 
 ```bash
 npm run build
 ```
 
-Preview your build locally:
+### Preview
 
 ```bash
 npm run preview
 ```
 
-Deploy your project to Cloudflare Workers:
+## Deployment
+
+Deploy to Cloudflare Workers:
 
 ```bash
-npm run build && npm run deploy
+npm run deploy
 ```
 
-Monitor your workers:
+For remote D1 database, apply migrations:
+
+```bash
+npx wrangler d1 execute steves-portfolio-db --remote --file=migrations/schema.sql
+npx wrangler d1 execute steves-portfolio-db --remote --file=migrations/seed.sql
+```
+
+## API Routes
+
+- `GET /api/projects` - Fetch all projects from D1
+- `POST /api/contact` - Submit contact form (saves to D1)
+- `GET /api/health` - Health check
+
+## Database Schema
+
+```sql
+CREATE TABLE projects (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  slug TEXT UNIQUE NOT NULL,
+  description TEXT,
+  tech_stack TEXT,
+  live_url TEXT,
+  github_url TEXT,
+  image_url TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE messages (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  message TEXT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+## Monitoring
 
 ```bash
 npx wrangler tail
 ```
 
-## Additional Resources
+## License
 
-- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
-- [Vite Documentation](https://vitejs.dev/guide/)
-- [React Documentation](https://reactjs.org/)
-- [Hono Documentation](https://hono.dev/)
+MIT
