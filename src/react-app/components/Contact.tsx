@@ -58,26 +58,33 @@ export default function Contact() {
 	};
 
 	return (
-		<section id="contact" className="py-20 bg-white dark:bg-gray-800 transition-colors">
-			<div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-				<h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900 dark:text-white mb-12">
-					Contact Me
-				</h2>
+		<section id="contact" className="py-24 bg-white dark:bg-gray-900 transition-colors">
+			<div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div className="text-center mb-12">
+					<h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+						Get in Touch
+					</h2>
+					<p className="mt-3 text-gray-500 dark:text-gray-400">
+						Have a project in mind or just want to say hello? I'd love to hear
+						from you.
+					</p>
+					<div className="mt-3 w-12 h-1 bg-blue-600 rounded-full mx-auto" />
+				</div>
 				{status === "success" && (
-					<div className="mb-6 p-4 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg">
+					<div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-xl border border-green-200 dark:border-green-800/40 text-sm">
 						Message sent successfully! I'll get back to you soon.
 					</div>
 				)}
 				{status === "error" && (
-					<div className="mb-6 p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg">
+					<div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-xl border border-red-200 dark:border-red-800/40 text-sm">
 						{errorMessage}
 					</div>
 				)}
-				<form onSubmit={handleSubmit} className="space-y-6">
+				<form onSubmit={handleSubmit} className="space-y-5">
 					<div>
 						<label
 							htmlFor="name"
-							className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+							className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
 						>
 							Name
 						</label>
@@ -87,7 +94,7 @@ export default function Contact() {
 							name="name"
 							value={formData.name}
 							onChange={handleChange}
-							className="mt-1 block w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+							className="block w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
 							placeholder="Your name"
 							required
 						/>
@@ -95,7 +102,7 @@ export default function Contact() {
 					<div>
 						<label
 							htmlFor="email"
-							className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+							className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
 						>
 							Email
 						</label>
@@ -105,7 +112,7 @@ export default function Contact() {
 							name="email"
 							value={formData.email}
 							onChange={handleChange}
-							className="mt-1 block w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+							className="block w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
 							placeholder="your@email.com"
 							required
 						/>
@@ -113,7 +120,7 @@ export default function Contact() {
 					<div>
 						<label
 							htmlFor="message"
-							className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+							className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
 						>
 							Message
 						</label>
@@ -123,15 +130,15 @@ export default function Contact() {
 							rows={5}
 							value={formData.message}
 							onChange={handleChange}
-							className="mt-1 block w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
-							placeholder="Your message..."
+							className="block w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none outline-none"
+							placeholder="Tell me about your project..."
 							required
 						/>
 					</div>
 					<button
 						type="submit"
 						disabled={status === "loading"}
-						className="w-full px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold rounded-lg transition-colors hover:shadow-lg"
+						className="w-full px-8 py-3.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/25"
 					>
 						{status === "loading" ? "Sending..." : "Send Message"}
 					</button>

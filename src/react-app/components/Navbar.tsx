@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 export default function Navbar() {
 	const [isScrolled, setIsScrolled] = useState(false);
+	const [isMobileOpen, setIsMobileOpen] = useState(false);
 	const [isDark, setIsDark] = useState(() => {
 		if (typeof window !== "undefined") {
 			const saved = localStorage.getItem("theme");
@@ -32,6 +33,7 @@ export default function Navbar() {
 	const scrollTo = (id: string) => {
 		const element = document.getElementById(id);
 		element?.scrollIntoView({ behavior: "smooth" });
+		setIsMobileOpen(false);
 	};
 
 	const navItems = [
@@ -46,37 +48,33 @@ export default function Navbar() {
 		<nav
 			className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
 				isScrolled
-					? "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md"
+					? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl shadow-sm border-b border-gray-200/50 dark:border-gray-700/50"
 					: "bg-transparent"
 			}`}
 		>
 			<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex items-center justify-between h-16">
-					<div className="flex-shrink-0">
-						<button
-							onClick={() => scrollTo("hero")}
-							className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-						>
-							Steve
-						</button>
+					<button
+						onClick={() => scrollTo("hero")}
+						className="text-lg font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+					>
+						Steve<span className="text-blue-600 dark:text-blue-400">.</span>
+					</button>
+					<div className="hidden md:flex items-center gap-1">
+						{navItems.map((item) => (
+							<button
+								key={item.id}
+								onClick={() => scrollTo(item.id)}
+								className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+							>
+								{item.label}
+							</button>
+						))}
 					</div>
-					<div className="hidden md:block">
-						<div className="ml-10 flex items-baseline space-x-4">
-							{navItems.map((item) => (
-								<button
-									key={item.id}
-									onClick={() => scrollTo(item.id)}
-									className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-								>
-									{item.label}
-								</button>
-							))}
-						</div>
-					</div>
-					<div className="flex items-center">
+					<div className="flex items-center gap-2">
 						<button
 							onClick={() => setIsDark(!isDark)}
-							className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+							className="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
 							aria-label="Toggle dark mode"
 						>
 							{isDark ? (
@@ -89,9 +87,39 @@ export default function Navbar() {
 								</svg>
 							)}
 						</button>
+						{/* Mobile menu button */}
+						<button
+							onClick={() => setIsMobileOpen(!isMobileOpen)}
+							className="md:hidden p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+							aria-label="Toggle menu"
+						>
+							<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								{isMobileOpen ? (
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+								) : (
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+								)}
+							</svg>
+						</button>
 					</div>
 				</div>
 			</div>
+			{/* Mobile menu */}
+			{isMobileOpen && (
+				<div className="md:hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50">
+					<div className="px-4 py-3 space-y-1">
+						{navItems.map((item) => (
+							<button
+								key={item.id}
+								onClick={() => scrollTo(item.id)}
+								className="block w-full text-left text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+							>
+								{item.label}
+							</button>
+						))}
+					</div>
+				</div>
+			)}
 		</nav>
 	);
 }
